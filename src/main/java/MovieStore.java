@@ -12,7 +12,7 @@ public class MovieStore {
     private final Map<String, LocalDate> checkedOutVideos = new HashMap<>();
 
     public void start() {
-        getValuesFromFile();
+        getMoviesFromAFile();
         getAllVideos();
         randomCheckOutVideos();
         getAllCheckedOutVideos();
@@ -20,17 +20,7 @@ public class MovieStore {
         getAllOverDueVideos();
     }
 
-    private void storeAllOverDueVideos() {
-        VideoStoreDates videoStoreDates = new VideoStoreDates();
-        for (int i = 0; i < checkedOutVideos.size(); i++) {
-            int randomVideo = (int) (Math.random() * checkedOutVideos.size());
-            if (videoStoreDates.getOverDue().isAfter(videoStoreDates.getDue())) {
-                overDueVideos.put(videos.get(randomVideo).getTitle(), videoStoreDates);
-            }
-        }
-    }
-
-    private void getValuesFromFile() {
+    private void getMoviesFromAFile() {
         try {
             BufferedReader bufferedReader = getBufferedReader();
             addAllVideos(bufferedReader);
@@ -54,9 +44,10 @@ public class MovieStore {
         }
     }
 
-    private void getAllOverDueVideos() {
-        for (Map.Entry<String, VideoStoreDates> entry : overDueVideos.entrySet()) {
-            System.out.println("Videos that are overdue '" + entry.getKey() + "' Date due to be given back '" + entry.getValue().getDue() + "' date brought back '" + entry.getValue().getOverDue() + "'");
+    private void getAllVideos() {
+        System.out.println("Videos available");
+        for (Video video : videos) {
+            System.out.println(video.getTitle());
         }
     }
 
@@ -74,11 +65,19 @@ public class MovieStore {
             System.out.println("Videos that are checked out '" + entry.getKey() + "' and due: " + entry.getValue());
         }
     }
+    private void storeAllOverDueVideos() {
+        VideoStoreDates videoStoreDates = new VideoStoreDates();
+        for (int i = 0; i < checkedOutVideos.size(); i++) {
+            int randomVideo = (int) (Math.random() * checkedOutVideos.size());
+            if (videoStoreDates.getOverDue().isAfter(videoStoreDates.getDue())) {
+                overDueVideos.put(videos.get(randomVideo).getTitle(), videoStoreDates);
+            }
+        }
+    }
 
-    private void getAllVideos() {
-        System.out.println("Videos available");
-        for (Video video : videos) {
-            System.out.println(video.getTitle());
+    private void getAllOverDueVideos() {
+        for (Map.Entry<String, VideoStoreDates> entry : overDueVideos.entrySet()) {
+            System.out.println("Videos that are overdue '" + entry.getKey() + "' Date due to be given back '" + entry.getValue().getDue() + "' date brought back '" + entry.getValue().getOverDue() + "'");
         }
     }
 }
