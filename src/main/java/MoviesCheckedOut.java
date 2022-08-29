@@ -15,7 +15,6 @@
  */
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,13 +23,14 @@ public class MoviesCheckedOut {
     private final Map<String, VideoStoreDates> overDueVideos = new HashMap<>();
     private final Map<String, LocalDate> checkedOutVideos = new HashMap<>();
 
+    VideoStoreDates videoCheckoutDates = new VideoStoreDates();
 
-    void randomCheckOutVideos() {
-        int randomVideosCheckedOut = (int) (Math.random() * MovieStore.videos.size());
-        VideoStoreDates videoStoreDates = new VideoStoreDates();
-        for ( int i = 0; i < randomVideosCheckedOut; i++ ) {
-            int randomVide = (int) (Math.random() * MovieStore.videos.size());
-            checkedOutVideos.put(MovieStore.videos.get(randomVide).getTitle(), videoStoreDates.getDue());
+
+    void checkOutRandomVideos() {
+        int random = (int) (Math.random() * MovieStore.videos.size());
+        for ( int i = 0; i < random; i++ ) {
+            int randomVideo = (int) (Math.random() * MovieStore.videos.size());
+            checkedOutVideos.put(MovieStore.videos.get(randomVideo).getTitle(), videoCheckoutDates.getDue());
         }
     }
 
@@ -40,17 +40,16 @@ public class MoviesCheckedOut {
         }
     }
 
-     void storeAllOverDueVideos() {
-        VideoStoreDates videoStoreDates = new VideoStoreDates();
+    void storeAllOverDueVideos() {
         for ( int i = 0; i < checkedOutVideos.size(); i++ ) {
             int randomVideo = (int) (Math.random() * checkedOutVideos.size());
-            if ( videoStoreDates.getOverDue().isAfter(videoStoreDates.getDue()) ) {
-                overDueVideos.put(MovieStore.videos.get(randomVideo).getTitle(), videoStoreDates);
+            if ( videoCheckoutDates.getOverDue().isAfter(videoCheckoutDates.getDue()) ) {
+                overDueVideos.put(MovieStore.videos.get(randomVideo).getTitle(), videoCheckoutDates);
             }
         }
     }
 
-     void getAllOverDueVideos() {
+    void getAllOverDueVideos() {
         for ( Map.Entry<String, VideoStoreDates> entry: overDueVideos.entrySet() ) {
             System.out.println(
                     "Videos that are overdue '" + entry.getKey() + "' Date due to be given back '" + entry.getValue()
